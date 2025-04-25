@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { getUserRole } from '../../../lib/auth'
-import CourseEditForm from '../../../components/CourseEditForm'
+import CourseEditForm from '../../../components/CourseEditionForm'
 import { useAuth } from '../../../context/AuthContext'
 
 const GET_COURSE = gql`
@@ -31,6 +32,8 @@ export default function EditCourse() {
     const { id } = router.query
     const { isAuthenticated } = useAuth()
 
+    const [accessDenied, setAccessDenied] = useState(false)
+
     const { loading, error, data } = useQuery(GET_COURSE, {
         variables: { id },
         skip: !id
@@ -38,17 +41,22 @@ export default function EditCourse() {
 
     const [updateCourse, { loading: updating }] = useMutation(UPDATE_COURSE)
 
-    if (!isAuthenticated) {
-        router.push('/login')
-        return null
-    }
+    useEffect(() => {
+        if (!id) return
 
-    // Check if user is a professor for this course
-    const userRole = getUserRole(id as string)
-    if (userRole !== 'Professor') {
-        router.push(`/courses/${id}`)
-        return null
-    }
+        if (!isAuthenticated) {
+            router.push('/login')
+            return
+        }
+
+        const userRole = getUserRole(id as string)
+        if (userRole !== 'Professor') {
+            router.push(`/courses/${id}`)
+            setAccessDenied(true)
+        }
+    }, [id, isAuthenticated, router])
+
+    if (!id || accessDenied) return null
 
     if (loading) return <p className="text-center py-8">Loading course data...</p>
     if (error) return <p className="text-center py-8 text-red-500">Error: {error.message}</p>
@@ -79,5 +87,3 @@ export default function EditCourse() {
         </div>
     )
 }
-
-

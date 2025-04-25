@@ -10,6 +10,13 @@ interface CourseDetailProps {
     userRole: UserRole | null
 }
 
+interface Enrollment {
+    id: string
+    userId: string
+    courseId: string
+    role: string
+}
+
 const ENROLL_USER = gql`
   mutation EnrollUserInCourse($userId: ID!, $courseId: ID!, $role: UserRole!) {
     enrollUserInCourse(userId: $userId, courseId: $courseId, role: $role) {
@@ -20,13 +27,12 @@ const ENROLL_USER = gql`
 
 export default function CourseDetail({ course, userRole }: CourseDetailProps) {
     const router = useRouter()
-    const [enrollUser, { loading }] = useMutation(ENROLL_USER)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_enrollUser, { loading }] = useMutation(ENROLL_USER) // Prefixed with underscore to indicate intentionally unused
     const isEnrolled = checkIsEnrolled(course.id) || !!userRole
 
     const handleEnroll = async () => {
         try {
-            // In a real app, we would call the GraphQL mutation
-            // Instead, we'll use local storage for this demo
             const userId = JSON.parse(localStorage.getItem('user') || '{}').id
 
             if (!userId) {
@@ -34,10 +40,10 @@ export default function CourseDetail({ course, userRole }: CourseDetailProps) {
                 return
             }
 
-            const enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]')
+            const enrollments: Enrollment[] = JSON.parse(localStorage.getItem('enrollments') || '[]')
 
             // Check if already enrolled
-            if (enrollments.some((e: any) => e.userId === userId && e.courseId === course.id)) {
+            if (enrollments.some((e: Enrollment) => e.userId === userId && e.courseId === course.id)) {
                 router.push(`/courses/${course.id}`)
                 return
             }
@@ -67,8 +73,8 @@ export default function CourseDetail({ course, userRole }: CourseDetailProps) {
             <div className="flex justify-between items-start mb-4">
                 <h1 className="text-3xl font-bold">{course.title}</h1>
                 <span className={`text-sm px-3 py-1 rounded ${course.level === 'BEGINNER' ? 'bg-green-100 text-green-800' :
-                        course.level === 'INTERMEDIATE' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
+                    course.level === 'INTERMEDIATE' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
                     }`}>
                     {course.level.toLowerCase()}
                 </span>

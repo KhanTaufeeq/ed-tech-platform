@@ -1,5 +1,5 @@
 import { useQuery, gql } from '@apollo/client'
-import { Course } from '../../types'
+// import { Course } from '../../types'
 import CourseList from '../../components/CourseList'
 
 const GET_COURSES = gql`

@@ -20,6 +20,7 @@ export default function Login() {
 
         if (user) {
             // Remove password before storing
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { password, ...userData } = user
             login(userData)
             router.push('/courses')
