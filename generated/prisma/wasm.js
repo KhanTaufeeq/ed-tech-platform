@@ -150,9 +150,9 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 exports.CourseLevel = exports.$Enums.CourseLevel = {
-  BEGINNER: 'BEGINNER',
-  INTERMEDIATE: 'INTERMEDIATE',
-  ADVANCED: 'ADVANCED'
+  Beginner: 'Beginner',
+  Intermediate: 'Intermediate',
+  Advanced: 'Advanced'
 };
 
 exports.UserRole = exports.$Enums.UserRole = {

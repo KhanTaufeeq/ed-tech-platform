@@ -42,9 +42,9 @@ export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
 export const CourseLevel: {
-  BEGINNER: 'BEGINNER',
-  INTERMEDIATE: 'INTERMEDIATE',
-  ADVANCED: 'ADVANCED'
+  Beginner: 'Beginner',
+  Intermediate: 'Intermediate',
+  Advanced: 'Advanced'
 };
 
 export type CourseLevel = (typeof CourseLevel)[keyof typeof CourseLevel]

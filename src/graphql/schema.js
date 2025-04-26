@@ -45,5 +45,6 @@ export const typeDefs = gql`
   type Mutation {
     enrollUserInCourse(userId: ID!, courseId: ID!, role: UserRole!): Enrollment!
     updateCourse(id: ID!, title: String, description: String, level: CourseLevel): Course!
+    createCourse(title: String!, description: String!, level: String!): Course!
   }
 `;

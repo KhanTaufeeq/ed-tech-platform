@@ -27,6 +27,15 @@ const resolvers = {
     }
   },
   Mutation: {
+    createCourse: async (_, { title, description, level }, { prisma }) => {
+  return await prisma.course.create({
+    data: {
+      title,
+      description,
+      level
+    }
+  })
+},
     enrollUserInCourse: async (_, { userId, courseId, role }, { prisma }) => {
       return await prisma.enrollment.create({
         data: {
@@ -48,7 +57,7 @@ const resolvers = {
         data: {
           ...(title && { title }),
           ...(description && { description }),
-          ...(level && { level })
+          ...(level && { level: CourseLevel[level] })
         }
       })
     }
